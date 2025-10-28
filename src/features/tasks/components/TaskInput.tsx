@@ -9,6 +9,7 @@ import cn from 'classnames';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
+import { setFilter } from '@/store/tasks/taskFilterSlice';
 
 interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
   className?: string;
@@ -32,7 +33,11 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
         dispatch(clearError());
       }
 
-      await createTask({ text });
+      await createTask({ text })
+        .unwrap()
+        .then(() => {
+          dispatch(setFilter('all'));
+        });
 
       if (inputRef.current) {
         inputRef.current.value = '';

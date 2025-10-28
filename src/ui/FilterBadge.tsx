@@ -26,8 +26,8 @@ const FilterBadge: React.FC<FilterBadgeProps> = ({
         'focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2',
         'cursor-pointer',
         active
-          ? 'bg-primary-100 text-primary-700 border border-primary-300'
-          : 'bg-surface-700 text-text-secondary border border-transparent hover:border-surface-300',
+          ? 'bg-primary-300 text-primary-900 border border-primary-300'
+          : 'bg-surface-600 text-gray-400 border border-transparent hover:border-surface-300',
         disabled && 'opacity-50 cursor-not-allowed'
       )}
       aria-label={`Filter by ${label}`}

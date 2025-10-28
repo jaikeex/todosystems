@@ -14,8 +14,8 @@ export default function TaskListHeader() {
   }, [done, all]);
 
   return (
-    <div className="flex items-center justify-between gap-3 p-2 pb-1">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-3 py-2 pb-1">
+      <div className="flex items-center gap-2 ml-2">
         <Tooltip position="right" content="Toggle all tasks">
           <Checkbox
             checked={allCompleted}
@@ -36,7 +36,8 @@ export default function TaskListHeader() {
         onClick={deleteAll}
         disabled={!done || busy.deleting}
         className={cn(
-          'disabled:opacity-40 disabled:cursor-not-allowed px-0 bg-transparent transition-colors duration-200 cursor-pointer',
+          'disabled:opacity-40 disabled:cursor-not-allowed px-2 py-1 bg-transparent transition-colors duration-200 cursor-pointer',
+          'border border-danger-500 rounded-md',
           !done || busy.deleting
             ? 'opacity-40 cursor-not-allowed'
             : 'opacity-100 cursor-pointer hover:text-danger-500 '

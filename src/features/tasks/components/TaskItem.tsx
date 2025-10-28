@@ -12,6 +12,7 @@ import cn from 'classnames';
 import { FiDelete } from 'react-icons/fi';
 import { Typography } from '@/ui/Typography';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
+import Tooltip from '@/ui/Tooltip';
 
 interface Props {
   task: Task;
@@ -133,14 +134,16 @@ const TaskItem: React.FC<Props> = ({ task }) => {
         </Typography>
       </button>
 
-      <button
-        onClick={handleDeleteClick}
-        disabled={isLoading}
-        aria-label={`Delete task: ${task.text}`}
-        className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <FiDelete size={20} />
-      </button>
+      <Tooltip content="Delete task" position="left">
+        <button
+          onClick={handleDeleteClick}
+          disabled={isLoading}
+          aria-label={`Delete task: ${task.text}`}
+          className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FiDelete size={20} />
+        </button>
+      </Tooltip>
     </li>
   );
 };
