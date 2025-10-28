@@ -1,4 +1,4 @@
-import { memo, useState, useCallback, useMemo } from 'react';
+import { memo, useState, useCallback } from 'react';
 import Checkbox from '@/ui/Checkbox';
 import Input from '@/ui/Input';
 import type { Task } from '@/types';
@@ -9,8 +9,9 @@ import {
   useUpdateTextMutation
 } from '@/store/api/tasks';
 import cn from 'classnames';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import { FiDelete } from 'react-icons/fi';
 import { Typography } from '@/ui/Typography';
+import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 
 interface Props {
   task: Task;
@@ -25,10 +26,7 @@ const TaskItem: React.FC<Props> = ({ task }) => {
   const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
   const [updateText, { isLoading: isUpdating }] = useUpdateTextMutation();
 
-  const isLoading = useMemo(
-    () => isCompleting || isIncompleting || isDeleting || isUpdating,
-    [isCompleting, isIncompleting, isDeleting, isUpdating]
-  );
+  const isLoading = isCompleting || isIncompleting || isDeleting || isUpdating;
 
   const toggleTaskStatus = useCallback(() => {
     if (task.completed) {
@@ -39,8 +37,16 @@ const TaskItem: React.FC<Props> = ({ task }) => {
   }, [task.completed, task.id, incomplete, complete]);
 
   const handleSave = useCallback(() => {
-    if (text.trim() && text !== task.text) {
-      updateText({ id: task.id, text });
+    const trimmedText = text.trim();
+
+    if (!trimmedText) {
+      setText(task.text);
+      setEditing(false);
+      return;
+    }
+
+    if (trimmedText !== task.text) {
+      updateText({ id: task.id, text: trimmedText });
     }
 
     setEditing(false);
@@ -65,6 +71,16 @@ const TaskItem: React.FC<Props> = ({ task }) => {
     setEditing(true);
   }, []);
 
+  const handleEditKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (!isLoading) handleEditClick();
+      }
+    },
+    [isLoading, handleEditClick]
+  );
+
   const handleDeleteClick = useCallback(() => {
     deleteTask(task.id);
   }, [task.id, deleteTask]);
@@ -80,8 +96,7 @@ const TaskItem: React.FC<Props> = ({ task }) => {
           autoFocus
           className="flex-1"
           aria-label="Edit task name"
-          role="textbox"
-          maxLength={100}
+          maxLength={MAX_TASK_TEXT_LENGTH}
         />
       </li>
     );
@@ -93,30 +108,38 @@ const TaskItem: React.FC<Props> = ({ task }) => {
         checked={task.completed}
         onChange={toggleTaskStatus}
         disabled={isLoading}
-        aria-label="Toggle task status"
-        role="checkbox"
+        aria-label={`Mark task "${task.text}" as ${
+          task.completed ? 'incomplete' : 'complete'
+        }`}
       />
 
-      <Typography
-        variant="body"
-        as="span"
+      <button
         onClick={isLoading ? undefined : handleEditClick}
+        onKeyDown={handleEditKeyDown}
+        disabled={isLoading}
+        aria-label={`Edit task: ${task.text}`}
         className={cn(
-          'flex-1',
-          task.completed && 'line-through text-gray-400',
+          'flex-1 bg-transparent border-none cursor-text p-0',
           isLoading && 'cursor-not-allowed'
         )}
       >
-        {task.text}
-      </Typography>
+        <Typography
+          variant="body"
+          as="span"
+          align="left"
+          className={cn(task.completed && 'line-through text-gray-400')}
+        >
+          {task.text}
+        </Typography>
+      </button>
 
       <button
         onClick={handleDeleteClick}
-        aria-label="Delete task"
-        role="button"
-        className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200"
+        disabled={isLoading}
+        aria-label={`Delete task: ${task.text}`}
+        className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <TrashIcon className="w-6 h-6" />
+        <FiDelete size={20} />
       </button>
     </li>
   );

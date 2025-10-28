@@ -31,13 +31,14 @@ export function useTaskCounts() {
   const tasks = useAppSelector(tasksSelectors.selectAll);
 
   return useMemo(() => {
-    const done = tasks.filter((t: Task) => t.completed).length;
-    const active = tasks.length - done;
-    return {
-      all: tasks.length,
-      active,
-      done
-    };
+    const done = tasks.reduce(
+      (count, task) => count + (task.completed ? 1 : 0),
+      0
+    );
+    const all = tasks.length;
+    const active = all - done;
+
+    return { all, active, done };
   }, [tasks]);
 }
 
@@ -47,10 +48,7 @@ export function useTaskBulkActions() {
   const [incomplete, incompleteState] = useIncompleteMutation();
   const [deleteTask, deleteState] = useDeleteTaskMutation();
 
-  const counts = useMemo(() => {
-    const done = tasks.filter((t) => t.completed).length;
-    return { done, all: tasks.length };
-  }, [tasks]);
+  const counts = useTaskCounts();
 
   const allCompleted = counts.all > 0 && counts.done === counts.all;
 
@@ -58,12 +56,17 @@ export function useTaskBulkActions() {
     const mutations = allCompleted
       ? tasks.filter((t) => t.completed).map((t) => incomplete(t.id))
       : tasks.filter((t) => !t.completed).map((t) => complete(t.id));
+
     await Promise.all(mutations);
   }, [allCompleted, tasks, complete, incomplete]);
 
   const deleteAll = useCallback(() => {
     const doneTasks = tasks.filter((t) => t.completed);
-    if (!doneTasks.length) return;
+
+    if (!doneTasks.length) {
+      return;
+    }
+
     if (
       window.confirm(
         `Delete ${doneTasks.length} completed task${

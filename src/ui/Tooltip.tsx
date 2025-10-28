@@ -16,12 +16,12 @@ const positionClasses = {
 };
 
 const arrowClasses = {
-  top: 'top-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-b-transparent border-t-gray-800',
+  top: 'top-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-b-transparent border-t-surface-500',
   bottom:
-    'bottom-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-t-transparent border-b-gray-800',
-  left: 'left-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-r-transparent border-l-gray-800',
+    'bottom-full left-1/2 -translate-x-1/2 border-l-transparent border-r-transparent border-t-transparent border-b-surface-500',
+  left: 'left-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-r-transparent border-l-surface-500',
   right:
-    'right-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-l-transparent border-r-gray-800'
+    'right-full top-1/2 -translate-y-1/2 border-t-transparent border-b-transparent border-l-transparent border-r-surface-500'
 };
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -42,16 +42,16 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={cn('relative inline-block', className)}
+      className={cn('relative inline-flex items-center', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {children}
 
-      {isVisible && (
+      {isVisible ? (
         <div
           className={cn(
-            'absolute z-50 px-3 py-2 text-sm text-white bg-gray-800 rounded-lg shadow-lg whitespace-nowrap',
+            'absolute z-50 px-3 py-2 text-sm text-text-primary bg-surface-500 rounded-lg shadow-lg whitespace-nowrap',
             'animate-in fade-in zoom-in-95 duration-200',
             positionClasses[position]
           )}
@@ -62,7 +62,7 @@ const Tooltip: React.FC<TooltipProps> = ({
             className={cn('absolute w-0 h-0 border-4', arrowClasses[position])}
           />
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

@@ -48,12 +48,17 @@ export const tasksApi = createApi({
       },
       transformResponse: (response: unknown) => TaskSchema.parse(response),
       async onQueryStarted({ text }, { dispatch, queryFulfilled }) {
-        const tempId = `${Date.now()}-${Math.random().toString(36).slice(2)}`; // copilot did this
         const createdDate = Date.now();
+        const tempId = `temp-${createdDate}`;
 
-        dispatch(
-          addTask({ id: tempId, text, completed: false, createdDate } as Task)
-        );
+        const tempTask: Task = {
+          id: tempId,
+          text,
+          completed: false,
+          createdDate
+        };
+
+        dispatch(addTask(tempTask));
 
         try {
           const { data } = await queryFulfilled;

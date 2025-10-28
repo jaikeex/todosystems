@@ -4,7 +4,7 @@ import cn from 'classnames';
 const classConfig = {
   variant: {
     'heading-lg': 'text-2xl font-semibold',
-    'heading-sm': 'text-lg font-bold',
+    'heading-sm': 'text-lg font-semibold',
     'body': 'text-base',
     'label': 'text-sm font-semibold',
     'error': 'font-base text-red-700 dark:text-red-500'

@@ -8,6 +8,7 @@ import { Typography } from '@/ui/Typography';
 import cn from 'classnames';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
+import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 
 interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
   className?: string;
@@ -58,15 +59,13 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
         placeholder="Enter a new task name"
         disabled={isLoading}
         aria-label="Enter a new task name"
-        role="textbox"
-        maxLength={100}
+        maxLength={MAX_TASK_TEXT_LENGTH}
       />
 
       <Button
         type="submit"
         disabled={isLoading}
         aria-label="Submit new task"
-        role="button"
         className="w-24 h-10"
       >
         {isLoading ? (

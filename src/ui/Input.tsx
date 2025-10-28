@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import cn from 'classnames';
 import { Typography } from './Typography';
 
@@ -8,16 +8,23 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', ...props }, ref) => {
+  ({ label, error, id, className = '', ...props }, ref) => {
+    const inputId = useId();
+
     return (
       <div className="w-full relative">
         {label && (
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor={id || inputId}
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             {label}
           </label>
         )}
+
         <input
           {...props}
+          id={id || inputId}
           ref={ref}
           className={cn(
             'w-full px-3 py-2 border rounded-lg',
@@ -35,6 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             as="p"
             variant="error"
             className="absolute -bottom-5 left-0 text-sm text-danger-500"
+            role="alert"
           >
             {error}
           </Typography>
@@ -43,5 +51,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
+
+Input.displayName = 'Input';
 
 export default Input;
