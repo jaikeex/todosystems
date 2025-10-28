@@ -3,8 +3,8 @@ import FilterBadge from '@/ui/FilterBadge';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setFilter, type Filter } from '@/store/tasks/taskFilterSlice';
 import { selectFilter, useTaskCounts } from '../hooks';
-
-const FILTERS: Filter[] = ['all', 'active', 'done'];
+import { Typography } from '@/ui/Typography';
+import { FILTERS } from '@/constants';
 
 const TaskFilters = () => {
   const dispatch = useAppDispatch();
@@ -23,16 +23,19 @@ const TaskFilters = () => {
   };
 
   return (
-    <div className="flex gap-2 items-center flex-wrap">
-      {FILTERS.map((f) => (
-        <FilterBadge
-          key={f}
-          label={f}
-          count={getCountForFilter(f)}
-          active={f === filter}
-          onClick={handleFilterClick(f)}
-        />
-      ))}
+    <div className="flex items-center justify-between gap-2 ml-2">
+      <Typography variant="label">Show:</Typography>
+      <div className="flex gap-2 items-center flex-wrap">
+        {FILTERS.map((f) => (
+          <FilterBadge
+            key={f}
+            label={f}
+            count={getCountForFilter(f)}
+            active={f === filter}
+            onClick={handleFilterClick(f)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

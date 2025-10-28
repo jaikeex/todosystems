@@ -5,3 +5,5 @@ export { default as Loader } from './Loader';
 export { default as ErrorDisplay } from './ErrorDisplay';
 export { default as Tooltip } from './Tooltip';
 export { default as FilterBadge } from './FilterBadge';
+export { default as RequestStatusIndicator } from './RequestStatusIndicator';
+export { default as AppHeader } from './AppHeader';
