@@ -1,46 +1,12 @@
-import { useMemo, useCallback } from 'react';
-import { useAppSelector } from '../../store/hooks';
-import { type RootState } from '../../store/index';
-import { tasksSelectors } from '../../store/tasks/tasksEntitiesSlice';
-import type { Task } from '../../types/task';
+import { useCallback } from 'react';
+import { useAppSelector } from '@/store/hooks';
+import { tasksSelectors } from '@/tasks/model';
 import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation
-} from '@/store/api/tasks';
-
-export const selectFilter = (state: RootState) => state.taskFilter.filter;
-
-export function useVisibleTasks() {
-  const tasks = useAppSelector(tasksSelectors.selectAll);
-  const filter = useAppSelector(selectFilter);
-
-  return useMemo(() => {
-    switch (filter) {
-      case 'done':
-        return tasks.filter((t: Task) => t.completed);
-      case 'active':
-        return tasks.filter((t: Task) => !t.completed);
-      default:
-        return tasks;
-    }
-  }, [tasks, filter]);
-}
-
-export function useTaskCounts() {
-  const tasks = useAppSelector(tasksSelectors.selectAll);
-
-  return useMemo(() => {
-    const done = tasks.reduce(
-      (count, task) => count + (task.completed ? 1 : 0),
-      0
-    );
-    const all = tasks.length;
-    const active = all - done;
-
-    return { all, active, done };
-  }, [tasks]);
-}
+} from '@/tasks/model/api/tasks';
+import { useTaskCounts } from './useTaskCounts';
 
 export function useTaskBulkActions() {
   const tasks = useAppSelector(tasksSelectors.selectAll);
@@ -57,7 +23,7 @@ export function useTaskBulkActions() {
       ? tasks.filter((t) => t.completed).map((t) => incomplete(t.id))
       : tasks.filter((t) => !t.completed).map((t) => complete(t.id));
 
-    await Promise.all(mutations);
+    await Promise.allSettled(mutations);
   }, [allCompleted, tasks, complete, incomplete]);
 
   const deleteAll = useCallback(() => {

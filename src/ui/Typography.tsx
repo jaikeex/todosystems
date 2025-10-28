@@ -36,7 +36,7 @@ export type TypographyProps<E extends React.ElementType> =
   TypographyOwnProps<E> &
     Omit<React.ComponentProps<E>, keyof TypographyOwnProps<E>>;
 
-export const Typography = <E extends React.ElementType = 'p'>({
+const Typography = <E extends React.ElementType = 'p'>({
   align,
   as,
   children,
@@ -62,3 +62,5 @@ export const Typography = <E extends React.ElementType = 'p'>({
     </Component>
   );
 };
+
+export default Typography;

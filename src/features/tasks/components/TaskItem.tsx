@@ -1,18 +1,13 @@
 import { memo, useState, useCallback } from 'react';
-import Checkbox from '@/ui/Checkbox';
-import Input from '@/ui/Input';
+import TaskItemEditor from './TaskItemEditor';
+import TaskItemDisplay from './TaskItemDisplay';
 import type { Task } from '@/types';
 import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation,
   useUpdateTextMutation
-} from '@/store/api/tasks';
-import cn from 'classnames';
-import { FiDelete } from 'react-icons/fi';
-import { Typography } from '@/ui/Typography';
-import { MAX_TASK_TEXT_LENGTH } from '@/constants';
-import Tooltip from '@/ui/Tooltip';
+} from '@/tasks/model/api/tasks';
 
 interface Props {
   task: Task;
@@ -88,63 +83,24 @@ const TaskItem: React.FC<Props> = ({ task }) => {
 
   if (editing) {
     return (
-      <li className="flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600">
-        <Input
-          value={text}
-          onChange={handleInputChange}
-          onBlur={handleSave}
-          onKeyDown={handleKeyDown}
-          autoFocus
-          className="flex-1"
-          aria-label="Edit task name"
-          maxLength={MAX_TASK_TEXT_LENGTH}
-        />
-      </li>
+      <TaskItemEditor
+        text={text}
+        onChange={handleInputChange}
+        onBlur={handleSave}
+        onKeyDown={handleKeyDown}
+      />
     );
   }
 
   return (
-    <li className="flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600">
-      <Checkbox
-        checked={task.completed}
-        onChange={toggleTaskStatus}
-        disabled={isLoading}
-        aria-label={`Mark task "${task.text}" as ${
-          task.completed ? 'incomplete' : 'complete'
-        }`}
-      />
-
-      <button
-        onClick={isLoading ? undefined : handleEditClick}
-        onKeyDown={handleEditKeyDown}
-        disabled={isLoading}
-        aria-label={`Edit task: ${task.text}`}
-        className={cn(
-          'flex-1 bg-transparent border-none cursor-text p-0',
-          isLoading && 'cursor-not-allowed'
-        )}
-      >
-        <Typography
-          variant="body"
-          as="span"
-          align="left"
-          className={cn(task.completed && 'line-through text-gray-400')}
-        >
-          {task.text}
-        </Typography>
-      </button>
-
-      <Tooltip content="Delete task" position="left">
-        <button
-          onClick={handleDeleteClick}
-          disabled={isLoading}
-          aria-label={`Delete task: ${task.text}`}
-          className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <FiDelete size={20} />
-        </button>
-      </Tooltip>
-    </li>
+    <TaskItemDisplay
+      task={task}
+      isLoading={isLoading}
+      onToggleStatus={toggleTaskStatus}
+      onEditClick={handleEditClick}
+      onEditKeyDown={handleEditKeyDown}
+      onDeleteClick={handleDeleteClick}
+    />
   );
 };
 

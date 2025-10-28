@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
-import FilterBadge from '@/ui/FilterBadge';
+import { FilterBadge, Typography } from '@/ui';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setFilter, type Filter } from '@/store/tasks/taskFilterSlice';
-import { selectFilter, useTaskCounts } from '../hooks';
-import { Typography } from '@/ui/Typography';
+import { setFilter } from '@/features/tasks/model';
+import { useTaskCounts } from '@/tasks/hooks';
 import { FILTERS } from '@/constants';
+import type { Filter } from '@/features/tasks/model';
 
 const TaskFilters = () => {
   const dispatch = useAppDispatch();
-  const filter = useAppSelector(selectFilter);
+  const filter = useAppSelector((state) => state.tasksFilter.filter);
   const counts = useTaskCounts();
 
   const handleFilterClick = useCallback(

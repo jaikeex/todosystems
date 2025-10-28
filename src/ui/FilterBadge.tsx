@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { Typography } from './Typography';
+import { Typography } from '@/ui';
 
 interface FilterBadgeProps {
   label: string;
@@ -22,7 +22,7 @@ const FilterBadge: React.FC<FilterBadgeProps> = ({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-all duration-200',
+        'inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm transition-all duration-200',
         'focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2',
         'cursor-pointer',
         active

@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { Typography } from './Typography';
+import { Typography } from '@/ui';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;

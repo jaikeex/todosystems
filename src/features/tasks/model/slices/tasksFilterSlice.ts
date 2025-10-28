@@ -2,15 +2,15 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type Filter = 'all' | 'done' | 'active';
 
-interface TaskFilterState {
+interface TasksFilterState {
   filter: Filter;
 }
 
-const initialState: TaskFilterState = {
+const initialState: TasksFilterState = {
   filter: 'all'
 };
 
-const taskFilterSlice = createSlice({
+const tasksFilterSlice = createSlice({
   name: 'taskFilter',
   initialState,
   reducers: {
@@ -20,5 +20,5 @@ const taskFilterSlice = createSlice({
   }
 });
 
-export const { setFilter } = taskFilterSlice.actions;
-export default taskFilterSlice.reducer;
+export const { setFilter } = tasksFilterSlice.actions;
+export default tasksFilterSlice.reducer;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { clearError } from '@/store/error/errorSlice';
-import { Typography } from './Typography';
+import { Typography } from '@/ui';
 import { ERROR_DISPLAY_DURATION } from '@/constants';
 
 const ErrorDisplay = () => {

@@ -2,14 +2,14 @@ import { useRef, useCallback } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import Input from '@/ui/Input';
 import Button from '@/ui/Button';
-import { useCreateTaskMutation } from '@/store/api/tasks';
+import { useCreateTaskMutation } from '@/tasks/model/api/tasks';
 import Loader from '@/ui/Loader';
-import { Typography } from '@/ui/Typography';
+import { Typography } from '@/ui';
 import cn from 'classnames';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
-import { setFilter } from '@/store/tasks/taskFilterSlice';
+import { setFilter } from '@/tasks/model';
 
 interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
   className?: string;
@@ -33,11 +33,18 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
         dispatch(clearError());
       }
 
-      await createTask({ text })
-        .unwrap()
-        .then(() => {
-          dispatch(setFilter('all'));
-        });
+      try {
+        await createTask({ text })
+          .unwrap()
+          .then(() => {
+            dispatch(setFilter('all'));
+          });
+      } catch {
+        /**
+         * no need to anything here, the error middleware handles this,
+         * but unwraping the call causes an error to be thrown.
+         */
+      }
 
       if (inputRef.current) {
         inputRef.current.value = '';

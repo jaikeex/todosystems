@@ -7,3 +7,4 @@ export { default as Tooltip } from './Tooltip';
 export { default as FilterBadge } from './FilterBadge';
 export { default as RequestStatusIndicator } from './RequestStatusIndicator';
 export { default as AppHeader } from './AppHeader';
+export { default as Typography } from './Typography';

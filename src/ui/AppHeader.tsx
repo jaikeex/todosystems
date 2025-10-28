@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { Typography } from '@/ui/Typography';
+import { Typography } from '@/ui';
 import RequestStatusIndicator from '@/ui/RequestStatusIndicator';
 import { FaGithub } from 'react-icons/fa';
 import { APP_NAME, GITHUB_URL } from '@/constants';

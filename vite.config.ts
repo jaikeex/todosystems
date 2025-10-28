@@ -8,16 +8,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
+      '@/tasks': path.resolve(__dirname, './src/features/tasks'),
       '@': path.resolve(__dirname, './src')
-    }
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8080', // your API
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
     }
   }
 });
