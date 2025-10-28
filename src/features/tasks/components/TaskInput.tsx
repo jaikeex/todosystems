@@ -4,8 +4,17 @@ import Input from '@/ui/Input';
 import Button from '@/ui/Button';
 import { useCreateTaskMutation } from '@/store/api/tasks';
 import Loader from '@/ui/Loader';
+import { Typography } from '@/ui/Typography';
+import cn from 'classnames';
+import { setError, clearError } from '@/store/error/errorSlice';
+import { useAppDispatch } from '@/store/hooks';
 
-const TaskInput = () => {
+interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
+  className?: string;
+}
+
+const TaskInput = ({ className, ...props }: TaskInputProps) => {
+  const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   const [createTask, { isLoading }] = useCreateTaskMutation();
 
@@ -16,7 +25,10 @@ const TaskInput = () => {
       const text = inputRef.current?.value.trim();
 
       if (!text) {
+        dispatch(setError('Task name is required'));
         return;
+      } else {
+        dispatch(clearError());
       }
 
       await createTask({ text });
@@ -25,7 +37,7 @@ const TaskInput = () => {
         inputRef.current.value = '';
       }
     },
-    [createTask]
+    [createTask, dispatch]
   );
 
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
@@ -35,11 +47,15 @@ const TaskInput = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-xl">
+    <form
+      onSubmit={handleSubmit}
+      className={cn('flex gap-2 w-full max-w-xl', className)}
+      {...props}
+    >
       <Input
         ref={inputRef}
         onKeyDown={handleKeyDown}
-        placeholder="Add a new task"
+        placeholder="Enter a new task name"
         disabled={isLoading}
         aria-label="Enter a new task name"
         role="textbox"
@@ -51,8 +67,15 @@ const TaskInput = () => {
         disabled={isLoading}
         aria-label="Submit new task"
         role="button"
+        className="w-24 h-10"
       >
-        {isLoading ? <Loader size="sm" /> : 'Add'}
+        {isLoading ? (
+          <Loader size="sm" />
+        ) : (
+          <Typography variant="body" className="text-surface-800 font-semibold">
+            Add
+          </Typography>
+        )}
       </Button>
     </form>
   );

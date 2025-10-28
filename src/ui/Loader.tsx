@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from './Typography';
 
 interface LoaderProps {
   size?: 'sm' | 'md' | 'lg';
@@ -24,7 +25,9 @@ export const Loader: React.FC<LoaderProps> = ({
         role="status"
         aria-label="Loading"
       />
-      <span className="sr-only">Loading...</span>
+      <Typography as="span" variant="body" className="sr-only">
+        Loading...
+      </Typography>
     </div>
   );
 };

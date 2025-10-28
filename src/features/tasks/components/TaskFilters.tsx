@@ -23,18 +23,16 @@ const TaskFilters = () => {
   };
 
   return (
-    <div className="w-full max-w-xl">
-      <div className="flex gap-2 items-center flex-wrap">
-        {FILTERS.map((f) => (
-          <FilterBadge
-            key={f}
-            label={f}
-            count={getCountForFilter(f)}
-            active={f === filter}
-            onClick={handleFilterClick(f)}
-          />
-        ))}
-      </div>
+    <div className="flex gap-2 items-center flex-wrap">
+      {FILTERS.map((f) => (
+        <FilterBadge
+          key={f}
+          label={f}
+          count={getCountForFilter(f)}
+          active={f === filter}
+          onClick={handleFilterClick(f)}
+        />
+      ))}
     </div>
   );
 };

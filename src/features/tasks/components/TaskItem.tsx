@@ -10,6 +10,7 @@ import {
 } from '@/store/api/tasks';
 import cn from 'classnames';
 import { TrashIcon } from '@heroicons/react/24/solid';
+import { Typography } from '@/ui/Typography';
 
 interface Props {
   task: Task;
@@ -70,7 +71,7 @@ const TaskItem: React.FC<Props> = ({ task }) => {
 
   if (editing) {
     return (
-      <li className="flex items-center gap-3 p-2 bg-gray-100 rounded-md min-h-16">
+      <li className="flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600">
         <Input
           value={text}
           onChange={handleInputChange}
@@ -87,7 +88,7 @@ const TaskItem: React.FC<Props> = ({ task }) => {
   }
 
   return (
-    <li className="flex items-center gap-3 p-2 bg-gray-100 rounded-md min-h-16">
+    <li className="flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600">
       <Checkbox
         checked={task.completed}
         onChange={toggleTaskStatus}
@@ -96,7 +97,9 @@ const TaskItem: React.FC<Props> = ({ task }) => {
         role="checkbox"
       />
 
-      <span
+      <Typography
+        variant="body"
+        as="span"
         onClick={isLoading ? undefined : handleEditClick}
         className={cn(
           'flex-1',
@@ -105,13 +108,13 @@ const TaskItem: React.FC<Props> = ({ task }) => {
         )}
       >
         {task.text}
-      </span>
+      </Typography>
 
       <button
         onClick={handleDeleteClick}
         aria-label="Delete task"
         role="button"
-        className="text-md text-red-700 hover:text-red-600 cursor-pointer transition-colors duration-200"
+        className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200"
       >
         <TrashIcon className="w-6 h-6" />
       </button>

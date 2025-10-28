@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { clearError } from '@/store/error/errorSlice';
+import { Typography } from './Typography';
 
 const ErrorDisplay = () => {
   const dispatch = useAppDispatch();
@@ -30,8 +31,12 @@ const ErrorDisplay = () => {
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error.message}</span>
+          <Typography as="strong" variant="body" className="font-bold">
+            Error:&nbsp;
+          </Typography>
+          <Typography as="span" variant="body" className="block sm:inline">
+            {error.message}
+          </Typography>
         </div>
       </div>
     </div>

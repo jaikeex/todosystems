@@ -3,6 +3,7 @@ import Checkbox from '@/ui/Checkbox';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import { useTaskBulkActions, useTaskCounts } from '../hooks';
 import { useMemo } from 'react';
+import { Typography } from '@/ui/Typography';
 
 export default function TaskListHeader() {
   const { done, all } = useTaskCounts();
@@ -25,9 +26,9 @@ export default function TaskListHeader() {
           />
         </Tooltip>
 
-        <span className="text-sm">
+        <Typography as="span" variant="body" className="text-sm">
           Done: {done}/{all}
-        </span>
+        </Typography>
       </div>
 
       <Tooltip content="Delete all completed tasks">
@@ -36,7 +37,7 @@ export default function TaskListHeader() {
           disabled={!done || busy.deleting}
           aria-label="Delete all completed tasks"
           role="button"
-          className="text-md text-red-700 hover:text-red-600 cursor-pointer transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+          className="text-md text-danger-500 hover:text-danger-600 cursor-pointer transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
         >
           <TrashIcon className="w-6 h-6" />
         </button>

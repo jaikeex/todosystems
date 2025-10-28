@@ -58,7 +58,6 @@ const Tooltip: React.FC<TooltipProps> = ({
           role="tooltip"
         >
           {content}
-          {/* Arrow */}
           <div
             className={cn('absolute w-0 h-0 border-4', arrowClasses[position])}
           />

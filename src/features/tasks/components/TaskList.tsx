@@ -4,6 +4,7 @@ import { useGetAllQuery } from '@/store/api/tasks';
 import type { Task } from '../../../types/task';
 import { useAppSelector } from '@/store/hooks';
 import { SkeletonList } from '.';
+import { Typography } from '@/ui/Typography';
 
 const TaskList = () => {
   const tasks = useVisibleTasks();
@@ -26,7 +27,11 @@ const TaskList = () => {
         ? 'No active tasks'
         : 'No tasks yet. Add one above!';
 
-    return <p className="text-center">{emptyMessage}</p>;
+    return (
+      <Typography as="p" variant="body" className="text-center">
+        {emptyMessage}
+      </Typography>
+    );
   }
 
   return (
