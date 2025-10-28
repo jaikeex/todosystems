@@ -1,15 +1,12 @@
 import { useRef, useCallback } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
-import Input from '@/ui/Input';
-import Button from '@/ui/Button';
-import { useCreateTaskMutation } from '@/tasks/model/api/tasks';
-import Loader from '@/ui/Loader';
-import { Typography } from '@/ui';
-import cn from 'classnames';
+import { Input, Button, Typography, Loader } from '@/ui';
+import { MAX_TASK_TEXT_LENGTH } from '@/constants';
+import { setFilter } from '@/tasks/store';
+import { useCreateTaskMutation } from '@/tasks/store/api/tasks';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
-import { MAX_TASK_TEXT_LENGTH } from '@/constants';
-import { setFilter } from '@/tasks/model';
+import cn from 'classnames';
 
 interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
   className?: string;

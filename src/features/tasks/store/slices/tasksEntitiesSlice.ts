@@ -3,8 +3,8 @@ import {
   createSlice,
   type EntityState
 } from '@reduxjs/toolkit';
-import type { Task } from '@/types/task';
-import { tasksApi } from '@/tasks/model/api/tasks';
+import type { Task } from '@/tasks/types';
+import { tasksApi } from '@/tasks/store/api/tasks';
 
 const tasksAdapter = createEntityAdapter<Task>({
   sortComparer: (a, b) => a.createdDate - b.createdDate

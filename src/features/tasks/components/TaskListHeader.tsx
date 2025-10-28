@@ -1,8 +1,6 @@
-import Tooltip from '@/ui/Tooltip';
-import Checkbox from '@/ui/Checkbox';
-import { useTaskBulkActions, useTaskCounts } from '../hooks';
 import { useMemo } from 'react';
-import { Typography } from '@/ui';
+import { Tooltip, Checkbox, Typography } from '@/ui';
+import { useTaskBulkActions, useTaskCounts } from '@/tasks/hooks';
 import cn from 'classnames';
 
 export default function TaskListHeader() {

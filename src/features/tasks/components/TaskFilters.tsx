@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { FilterBadge, Typography } from '@/ui';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setFilter } from '@/features/tasks/model';
-import { useTaskCounts } from '@/tasks/hooks';
 import { FILTERS } from '@/constants';
-import type { Filter } from '@/features/tasks/model';
+import { setFilter } from '@/features/tasks/store';
+import type { Filter } from '@/features/tasks/store';
+import { useTaskCounts } from '@/tasks/hooks';
 
 const TaskFilters = () => {
   const dispatch = useAppDispatch();

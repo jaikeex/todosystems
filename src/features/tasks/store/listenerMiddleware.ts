@@ -1,12 +1,12 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { tasksApi } from '@/features/tasks/model/api/tasks';
+import { tasksApi } from '@/features/tasks/store/api/tasks';
 import {
   addTask,
   removeTask,
   upsertTask,
   updateTask
-} from '@/features/tasks/model';
-import type { Task } from '@/types/task';
+} from '@/features/tasks/store';
+import type { Task } from '@/tasks/types';
 import type { RootState, AppDispatch } from '@/store';
 
 /**

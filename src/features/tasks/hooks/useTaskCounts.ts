@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import { tasksSelectors } from '@/tasks/model';
+import { tasksSelectors } from '@/tasks/store';
 
 export function useTaskCounts() {
   const tasks = useAppSelector(tasksSelectors.selectAll);

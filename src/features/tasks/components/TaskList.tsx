@@ -1,10 +1,10 @@
-import { selectFilter, useVisibleTasks } from '../hooks';
+import type { Task } from '@/tasks/types';
 import TaskItem from './TaskItem';
-import { useGetAllQuery } from '@/tasks/model/api/tasks';
-import type { Task } from '../../../types/task';
-import { useAppSelector } from '@/store/hooks';
-import { SkeletonList } from '.';
+import SkeletonList from './SkeletonList';
 import { Typography } from '@/ui';
+import { selectFilter, useVisibleTasks } from '@/tasks/hooks';
+import { useGetAllQuery } from '@/tasks/store/api/tasks';
+import { useAppSelector } from '@/store/hooks';
 
 const TaskList = () => {
   const tasks = useVisibleTasks();

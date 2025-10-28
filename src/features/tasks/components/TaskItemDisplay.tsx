@@ -1,9 +1,7 @@
-import Checkbox from '@/ui/Checkbox';
-import Tooltip from '@/ui/Tooltip';
+import type { Task } from '@/tasks/types';
+import { Typography, Checkbox, Tooltip } from '@/ui';
 import { FiDelete } from 'react-icons/fi';
-import { Typography } from '@/ui';
 import cn from 'classnames';
-import type { Task } from '@/types';
 
 interface TaskItemDisplayProps {
   task: Task;

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { z } from 'zod';
-import { TaskSchema, TaskPayloadSchema } from '@/types/task';
-import type { Task, TaskPayload } from '@/types/task';
+import { TaskSchema, TaskPayloadSchema } from '@/tasks/types';
+import type { Task, TaskPayload } from '@/tasks/types';
 
 const TASKS_TAG = 'Tasks' as const;
 

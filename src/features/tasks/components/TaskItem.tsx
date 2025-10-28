@@ -1,13 +1,13 @@
 import { memo, useState, useCallback } from 'react';
 import TaskItemEditor from './TaskItemEditor';
 import TaskItemDisplay from './TaskItemDisplay';
-import type { Task } from '@/types';
+import type { Task } from '@/tasks/types';
 import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation,
   useUpdateTextMutation
-} from '@/tasks/model/api/tasks';
+} from '@/tasks/store/api/tasks';
 
 interface Props {
   task: Task;

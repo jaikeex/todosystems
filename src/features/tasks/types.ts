@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export type Task = {
   id: string;
   text: string;
@@ -7,8 +9,6 @@ export type Task = {
 };
 
 export type TaskPayload = Pick<Task, 'text'>;
-
-import { z } from 'zod';
 
 export const TaskSchema = z.object({
   id: z.string(),

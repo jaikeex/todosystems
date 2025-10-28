@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { tasksReducers, tasksMiddleware } from '@/features/tasks/model';
+import { tasksReducers, tasksMiddleware } from '@/features/tasks/store';
 import errorReducer from './error/errorSlice';
 import { errorMiddleware } from './error/errorMiddleware';
 

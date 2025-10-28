@@ -1,6 +1,6 @@
-import Input from '@/ui/Input';
-import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 import type { KeyboardEvent, ChangeEvent } from 'react';
+import { Input } from '@/ui';
+import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 
 interface TaskItemEditorProps {
   text: string;

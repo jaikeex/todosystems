@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { type RootState } from '@/store/index';
-import { tasksSelectors } from '@/tasks/model';
-import type { Task } from '@/types/task';
+import { tasksSelectors } from '@/tasks/store';
+import type { Task } from '@/tasks/types';
 
 export const selectFilter = (state: RootState) => state.tasksFilter.filter;
 

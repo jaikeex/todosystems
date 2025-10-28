@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import { tasksSelectors } from '@/tasks/model';
+import { tasksSelectors } from '@/tasks/store';
 import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation
-} from '@/tasks/model/api/tasks';
+} from '@/tasks/store/api/tasks';
 import { useTaskCounts } from './useTaskCounts';
 
 export function useTaskBulkActions() {
