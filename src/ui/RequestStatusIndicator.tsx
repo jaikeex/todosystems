@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { Loader } from '@/ui';
 import cn from 'classnames';
@@ -24,33 +24,49 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
     animationClases.fadeIn
   );
   const apiState = useAppSelector((state) => state.tasksApi);
+  const startTimeRef = useRef<number | undefined>(undefined);
 
   const hasPendingRequests = useMemo(() => {
     if (!apiState) {
       return false;
     }
 
-    const { queries = {} } = apiState as {
+    const { queries = {}, mutations = {} } = apiState as {
       queries?: Record<string, RequestSliceState>;
+      mutations?: Record<string, RequestSliceState>;
     };
 
     const isPending = (entry: unknown) =>
       (entry as RequestSliceState | undefined)?.status === 'pending';
 
-    return Object.values(queries ?? {}).some(isPending);
+    return (
+      Object.values(queries ?? {}).some(isPending) ||
+      Object.values(mutations ?? {}).some(isPending)
+    );
   }, [apiState]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout> | undefined;
 
     if (hasPendingRequests) {
+      startTimeRef.current = Date.now();
       setAnimationClassName(animationClases.fadeIn);
       setVisible(true);
     } else {
-      setAnimationClassName(animationClases.fadeOut);
-      timeout = setTimeout(() => {
+      const elapsed = startTimeRef.current
+        ? Date.now() - startTimeRef.current
+        : 0;
+
+      if (elapsed >= 100) {
+        setAnimationClassName(animationClases.fadeOut);
+        timeout = setTimeout(() => {
+          setVisible(false);
+        }, 200);
+      } else {
         setVisible(false);
-      }, 200);
+      }
+
+      startTimeRef.current = undefined;
     }
 
     return () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography } from '@/ui';
+import { FaReact } from 'react-icons/fa';
 
 interface LoaderProps {
   size?: 'sm' | 'md' | 'lg';
@@ -18,12 +19,8 @@ export const Loader: React.FC<LoaderProps> = ({
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <img
-        src="/react.svg"
-        alt="Loading"
-        className={`${sizeClasses[size]} animate-spin`}
-        role="status"
-        aria-label="Loading"
+      <FaReact
+        className={`${sizeClasses[size]} animate-spin text-secondary-400`}
       />
       <Typography as="span" variant="body" className="sr-only">
         Loading...
