@@ -12,10 +12,14 @@ interface ApiError {
 }
 
 /**
- * Not a very robust check, but feels good enough how the api is.
+ * Not a very robust check, but feels good enough for how the api is.
  */
 const isApiError = (payload: unknown): payload is ApiError => {
-  return typeof payload === 'object' && payload !== null && 'data' in payload;
+  return (
+    typeof payload === 'object' &&
+    payload !== null &&
+    ('error' in payload || 'originalStatus' in payload)
+  );
 };
 
 export const errorMiddleware: Middleware = (store) => (next) => (action) => {

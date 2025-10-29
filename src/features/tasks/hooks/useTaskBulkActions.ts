@@ -37,6 +37,10 @@ export function useTaskBulkActions() {
       return;
     }
 
+    /**
+     * Not ideal. breaks immersion, a11y and more, but exposing this action without any sort of user confirmation
+     * seems bad. Ideal solution would be a custom confirm modal but I think that is beyond the scope of this task.
+     */
     if (
       window.confirm(
         `Delete ${doneTasks.length} completed task${
