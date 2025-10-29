@@ -2,14 +2,11 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { Loader } from '@/ui';
 import { twMerge } from 'tailwind-merge';
+import { tasksApi } from '@/features/tasks/store';
 
 interface RequestStatusIndicatorProps {
   className?: string;
 }
-
-type RequestSliceState = {
-  status?: 'pending';
-};
 
 const animationClasses = {
   fadeIn: 'animate-fadeIn',
@@ -27,7 +24,7 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
   const [animationClassName, setAnimationClassName] = useState(
     animationClasses.fadeIn
   );
-  const apiState = useAppSelector((state) => state.tasksApi);
+  const apiState = useAppSelector((state) => state[tasksApi.reducerPath]);
   const startTimeRef = useRef<number | undefined>(undefined);
 
   const hasPendingRequests = useMemo(() => {
@@ -35,12 +32,9 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
       return false;
     }
 
-    const { queries = {}, mutations = {} } = apiState as {
-      queries?: Record<string, RequestSliceState>;
-      mutations?: Record<string, RequestSliceState>;
-    };
+    const { queries = {}, mutations = {} } = apiState;
 
-    const isPending = (entry: RequestSliceState | undefined) =>
+    const isPending = (entry: { status?: string } | undefined) =>
       entry?.status === 'pending';
 
     return (

@@ -6,7 +6,7 @@ export type Task = {
   text: string;
   completed: boolean;
   createdDate: number;
-  completedDate?: number;
+  completedDate?: number | undefined;
 };
 
 export type TaskPayload = Pick<Task, 'text'>;
