@@ -1,15 +1,24 @@
-import { isRejectedWithValue, type Middleware } from '@reduxjs/toolkit';
+import {
+  isRejectedWithValue,
+  isRejected,
+  type Middleware
+} from '@reduxjs/toolkit';
 import { setError } from './errorSlice';
 
 export const errorMiddleware: Middleware = (store) => (next) => (action) => {
-  if (isRejectedWithValue(action)) {
+  if (isRejected(action) || isRejectedWithValue(action)) {
     const error = action.payload as {
       data?: string;
       error?: string;
-      status?: number;
+      originalStatus?: number;
     };
 
-    let errorMessage = 'An error occurred';
+    const endpoint = (action.meta as { arg?: { endpointName?: string } })?.arg
+      ?.endpointName;
+
+    let errorMessage = endpoint
+      ? `Request "${endpoint}" failed`
+      : 'An error occurred';
 
     if (error.data) {
       errorMessage =
@@ -18,9 +27,11 @@ export const errorMiddleware: Middleware = (store) => (next) => (action) => {
           : JSON.stringify(error.data);
     } else if (error.error) {
       errorMessage = error.error;
-    } else if (error.status) {
-      errorMessage = `Request failed with status ${error.status}`;
+    } else if (error.originalStatus) {
+      errorMessage = `Request failed with status ${error.originalStatus}`;
     }
+
+    errorMessage = errorMessage.slice(0, 100).concat('...');
 
     store.dispatch(setError(errorMessage));
   }

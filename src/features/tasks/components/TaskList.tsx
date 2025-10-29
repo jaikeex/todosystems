@@ -7,11 +7,13 @@ import { useGetAllQuery } from '@/tasks/store/api/tasks';
 import { useAppSelector } from '@/store/hooks';
 
 const TaskList = () => {
-  const tasks = useVisibleTasks();
+  const { data, isLoading, isError } = useGetAllQuery();
   const filter = useAppSelector(selectFilter);
-  const { isLoading, isError } = useGetAllQuery();
 
-  if (isLoading && tasks.length === 0) {
+  const hasCachedData = data !== undefined;
+  const tasks = useVisibleTasks();
+
+  if (isLoading && !hasCachedData) {
     return <SkeletonList />;
   }
 

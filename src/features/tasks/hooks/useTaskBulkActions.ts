@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import { tasksSelectors } from '@/tasks/store';
 import {
+  useGetAllQuery,
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation
@@ -9,7 +8,7 @@ import {
 import { useTaskCounts } from './useTaskCounts';
 
 export function useTaskBulkActions() {
-  const tasks = useAppSelector(tasksSelectors.selectAll);
+  const { data: tasks = [] } = useGetAllQuery();
   const [complete, completeState] = useCompleteMutation();
   const [incomplete, incompleteState] = useIncompleteMutation();
   const [deleteTask, deleteState] = useDeleteTaskMutation();

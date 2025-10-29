@@ -1,18 +1,16 @@
 import { useMemo } from 'react';
-import { useAppSelector } from '@/store/hooks';
-import { tasksSelectors } from '@/tasks/store';
+import { useGetAllQuery } from '@/tasks/store/api/tasks';
 
 export function useTaskCounts() {
-  const tasks = useAppSelector(tasksSelectors.selectAll);
+  const counts = useGetAllQuery(undefined, {
+    selectFromResult: ({ data = [] }) => ({
+      done: data.filter((t) => t.completed).length,
+      active: data.filter((t) => !t.completed).length,
+      all: data.length
+    })
+  });
 
   return useMemo(() => {
-    const done = tasks.reduce(
-      (count, task) => count + (task.completed ? 1 : 0),
-      0
-    );
-    const all = tasks.length;
-    const active = all - done;
-
-    return { all, active, done };
-  }, [tasks]);
+    return counts;
+  }, [counts]);
 }

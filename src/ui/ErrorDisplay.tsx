@@ -4,6 +4,9 @@ import { clearError } from '@/store/error/errorSlice';
 import { Typography } from '@/ui';
 import { ERROR_DISPLAY_DURATION } from '@/constants';
 
+/**
+ * Seemed pointless to implement a full snackbar solution.
+ */
 const ErrorDisplay = () => {
   const dispatch = useAppDispatch();
   const error = useAppSelector((state) => state.error);
