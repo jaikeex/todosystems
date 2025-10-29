@@ -20,9 +20,7 @@ interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
 const TaskInput = ({ className, ...props }: TaskInputProps) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { isLoading: isQueryLoading } = useGetAllQuery(undefined, {
-    selectFromResult: ({ isLoading }) => ({ isLoading })
-  });
+  const { isLoading: isQueryLoading } = useGetAllQuery();
   const [createTask, { isLoading }] = useCreateTaskMutation();
 
   const handleSubmit = useCallback(
