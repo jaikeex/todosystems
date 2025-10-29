@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { FilterBadge, Typography } from '@/ui';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { FILTERS } from '@/constants';
 import { setFilter } from '@/features/tasks/store';
-import type { Filter } from '@/features/tasks/store';
+import type { Filter } from '@/tasks/types';
 import { useTaskCounts } from '@/tasks/hooks';
 
 const TaskFilters = () => {
@@ -11,16 +11,14 @@ const TaskFilters = () => {
   const filter = useAppSelector((state) => state.tasksFilter.filter);
   const counts = useTaskCounts();
 
-  const handleFilterClick = useCallback(
-    (f: Filter) => () => {
-      dispatch(setFilter(f));
-    },
-    [dispatch]
-  );
+  const handlers = useMemo(() => {
+    return FILTERS.reduce<Record<Filter, () => void>>((acc, f) => {
+      acc[f] = () => dispatch(setFilter(f));
+      return acc;
+    }, {} as Record<Filter, () => void>);
+  }, [dispatch]);
 
-  const getCountForFilter = (f: Filter): number => {
-    return counts[f];
-  };
+  const getCountForFilter = (f: Filter): number => counts[f];
 
   return (
     <div className="flex items-center justify-between gap-2 ml-2">
@@ -32,7 +30,7 @@ const TaskFilters = () => {
             label={f}
             count={getCountForFilter(f)}
             active={f === filter}
-            onClick={handleFilterClick(f)}
+            onClick={handlers[f]}
           />
         ))}
       </div>

@@ -18,7 +18,11 @@ export const Loader: React.FC<LoaderProps> = ({
   };
 
   return (
-    <div className={`flex items-center justify-center ${className}`}>
+    <div
+      className={`flex items-center justify-center ${className}`}
+      aria-label="Loading..."
+      aria-live="polite"
+    >
       <FaReact
         className={`${sizeClasses[size]} animate-spin text-secondary-400`}
       />

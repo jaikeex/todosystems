@@ -17,4 +17,4 @@ export const tasksReducers = {
 export const tasksMiddleware = [tasksApi.middleware];
 
 export { tasksApi } from './api/tasks';
-export * from './slices';
+export * from './slices/tasksFilterSlice';

@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-export type Filter = 'all' | 'done' | 'active';
+import type { Filter } from '@/tasks/types';
 
 interface TasksFilterState {
   filter: Filter;
@@ -11,7 +10,7 @@ const initialState: TasksFilterState = {
 };
 
 const tasksFilterSlice = createSlice({
-  name: 'taskFilter',
+  name: 'tasksFilter',
   initialState,
   reducers: {
     setFilter: (state, action: PayloadAction<Filter>) => {

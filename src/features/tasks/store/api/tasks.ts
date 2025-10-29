@@ -95,7 +95,7 @@ export const tasksApi = createApi({
             })
           );
         } catch {
-          // no-op
+          // nothing to see here
         }
       }
     }),
@@ -124,9 +124,9 @@ export const tasksApi = createApi({
           const { data: updatedTask } = await queryFulfilled;
           dispatch(
             tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-              const index = draft.findIndex((t) => t.id === id);
-              if (index !== -1) {
-                draft[index] = updatedTask;
+              const task = draft.find((t) => t.id === id);
+              if (task) {
+                Object.assign(task, updatedTask);
               }
             })
           );

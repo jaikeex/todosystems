@@ -8,6 +8,9 @@ import {
   useDeleteTaskMutation,
   useUpdateTextMutation
 } from '@/tasks/store/api/tasks';
+import { MAX_TASK_TEXT_LENGTH } from '@/constants';
+import { useAppDispatch } from '@/store/hooks';
+import { setError } from '@/store/error/errorSlice';
 
 interface Props {
   task: Task;
@@ -16,11 +19,23 @@ interface Props {
 const TaskItem: React.FC<Props> = ({ task }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(task.text);
+  const dispatch = useAppDispatch();
 
-  const [complete, { isLoading: isCompleting }] = useCompleteMutation();
-  const [incomplete, { isLoading: isIncompleting }] = useIncompleteMutation();
-  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
-  const [updateText, { isLoading: isUpdating }] = useUpdateTextMutation();
+  const [complete, { isLoading: isCompleting }] = useCompleteMutation({
+    fixedCacheKey: `complete-${task.id}`
+  });
+
+  const [incomplete, { isLoading: isIncompleting }] = useIncompleteMutation({
+    fixedCacheKey: `incomplete-${task.id}`
+  });
+
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation({
+    fixedCacheKey: `delete-${task.id}`
+  });
+
+  const [updateText, { isLoading: isUpdating }] = useUpdateTextMutation({
+    fixedCacheKey: `update-${task.id}`
+  });
 
   const isLoading = isCompleting || isIncompleting || isDeleting || isUpdating;
 
@@ -32,7 +47,7 @@ const TaskItem: React.FC<Props> = ({ task }) => {
     }
   }, [task.completed, task.id, incomplete, complete]);
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     const trimmedText = text.trim();
 
     if (!trimmedText) {
@@ -41,12 +56,30 @@ const TaskItem: React.FC<Props> = ({ task }) => {
       return;
     }
 
-    if (trimmedText !== task.text) {
-      updateText({ id: task.id, text: trimmedText });
+    // Should never happen as the input is limited, but just in case
+    if (trimmedText.length > MAX_TASK_TEXT_LENGTH) {
+      setText(task.text);
+      setEditing(false);
+
+      dispatch(
+        setError(`Task name cannot exceed ${MAX_TASK_TEXT_LENGTH} characters`)
+      );
+      return;
+    }
+
+    if (trimmedText === task.text) {
+      setEditing(false);
+      return;
+    }
+
+    try {
+      await updateText({ id: task.id, text: trimmedText }).unwrap();
+    } catch {
+      setText(task.text);
     }
 
     setEditing(false);
-  }, [text, task.id, task.text, updateText]);
+  }, [text, task.id, task.text, updateText, dispatch]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {

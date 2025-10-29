@@ -11,17 +11,21 @@ type RequestSliceState = {
   status?: 'pending';
 };
 
-const animationClases = {
+const animationClasses = {
   fadeIn: 'animate-fadeIn',
   fadeOut: 'animate-fadeOut'
 };
 
+/**
+ * Does not serve any special purpose, wanted to test something else with rtk query and ended up writing this...
+ * Feels harmless so just left it in.
+ */
 const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
   className = ''
 }) => {
   const [visible, setVisible] = useState(false);
   const [animationClassName, setAnimationClassName] = useState(
-    animationClases.fadeIn
+    animationClasses.fadeIn
   );
   const apiState = useAppSelector((state) => state.tasksApi);
   const startTimeRef = useRef<number | undefined>(undefined);
@@ -36,8 +40,8 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
       mutations?: Record<string, RequestSliceState>;
     };
 
-    const isPending = (entry: unknown) =>
-      (entry as RequestSliceState | undefined)?.status === 'pending';
+    const isPending = (entry: RequestSliceState | undefined) =>
+      entry?.status === 'pending';
 
     return (
       Object.values(queries ?? {}).some(isPending) ||
@@ -50,7 +54,7 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
 
     if (hasPendingRequests) {
       startTimeRef.current = Date.now();
-      setAnimationClassName(animationClases.fadeIn);
+      setAnimationClassName(animationClasses.fadeIn);
       setVisible(true);
     } else {
       const elapsed = startTimeRef.current
@@ -58,7 +62,7 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
         : 0;
 
       if (elapsed >= 100) {
-        setAnimationClassName(animationClases.fadeOut);
+        setAnimationClassName(animationClasses.fadeOut);
         timeout = setTimeout(() => {
           setVisible(false);
         }, 200);

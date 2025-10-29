@@ -5,33 +5,41 @@ import {
 } from '@reduxjs/toolkit';
 import { setError } from './errorSlice';
 
+interface ApiError {
+  data?: unknown;
+  error?: string;
+  originalStatus?: number;
+}
+
+/**
+ * Not a very robust check, but feels good enough how the api is.
+ */
+const isApiError = (payload: unknown): payload is ApiError => {
+  return typeof payload === 'object' && payload !== null && 'data' in payload;
+};
+
 export const errorMiddleware: Middleware = (store) => (next) => (action) => {
   if (isRejected(action) || isRejectedWithValue(action)) {
-    const error = action.payload as {
-      data?: string;
-      error?: string;
-      originalStatus?: number;
-    };
+    const payload = action.payload;
 
-    const endpoint = (action.meta as { arg?: { endpointName?: string } })?.arg
-      ?.endpointName;
-
-    let errorMessage = endpoint
-      ? `Request "${endpoint}" failed`
-      : 'An error occurred';
-
-    if (error.data) {
-      errorMessage =
-        typeof error.data === 'string'
-          ? error.data
-          : JSON.stringify(error.data);
-    } else if (error.error) {
-      errorMessage = error.error;
-    } else if (error.originalStatus) {
-      errorMessage = `Request failed with status ${error.originalStatus}`;
+    if (!isApiError(payload)) {
+      store.dispatch(setError('An unexpected error occurred'));
+      return next(action);
     }
 
-    errorMessage = errorMessage.slice(0, 100).concat('...');
+    let errorMessage = 'An error occurred';
+
+    if (typeof payload.data === 'string') {
+      errorMessage = payload.data;
+    } else if (payload.error) {
+      errorMessage = payload.error;
+    } else if (payload.originalStatus) {
+      errorMessage = `Request failed with status ${payload.originalStatus}`;
+    }
+
+    if (errorMessage.length > 100) {
+      errorMessage = errorMessage.slice(0, 100) + '...';
+    }
 
     store.dispatch(setError(errorMessage));
   }

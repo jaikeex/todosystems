@@ -3,7 +3,7 @@ import type { FormEvent, KeyboardEvent } from 'react';
 import { Input, Button, Typography, Loader } from '@/ui';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 import { setFilter } from '@/tasks/store';
-import { useCreateTaskMutation } from '@/tasks/store/api/tasks';
+import { useCreateTaskMutation, useGetAllQuery } from '@/tasks/store/api/tasks';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { twMerge } from 'tailwind-merge';
@@ -15,6 +15,9 @@ interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
 const TaskInput = ({ className, ...props }: TaskInputProps) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { isLoading: isQueryLoading } = useGetAllQuery(undefined, {
+    selectFromResult: ({ isLoading }) => ({ isLoading })
+  });
   const [createTask, { isLoading }] = useCreateTaskMutation();
 
   const handleSubmit = useCallback(
@@ -30,21 +33,26 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
         dispatch(clearError());
       }
 
+      // Should never happen as the input is limited, but just in case
+      if (text.length > MAX_TASK_TEXT_LENGTH) {
+        dispatch(
+          setError(`Task name cannot exceed ${MAX_TASK_TEXT_LENGTH} characters`)
+        );
+        return;
+      }
+
       try {
-        await createTask({ text })
-          .unwrap()
-          .then(() => {
-            dispatch(setFilter('all'));
-          });
+        await createTask({ text }).unwrap();
+        dispatch(setFilter('all'));
+
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
       } catch {
         /**
          * no need to anything here, the error middleware handles this,
          * but unwraping the call causes an error to be thrown.
          */
-      }
-
-      if (inputRef.current) {
-        inputRef.current.value = '';
       }
     },
     [createTask, dispatch]
@@ -73,7 +81,7 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
 
       <Button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || isQueryLoading}
         aria-label="Submit new task"
         className="w-24 h-10"
       >

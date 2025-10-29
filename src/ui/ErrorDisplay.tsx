@@ -27,12 +27,12 @@ const ErrorDisplay = () => {
   useEffect(() => {
     if (error.message) {
       const timer = setTimeout(() => {
-        handleClearError();
+        dispatch(clearError());
       }, ERROR_DISPLAY_DURATION);
 
       return () => clearTimeout(timer);
     }
-  }, [error.timestamp, error.message, handleClearError]);
+  }, [error.timestamp, error.message, dispatch]);
 
   if (!error.message) return null;
 
