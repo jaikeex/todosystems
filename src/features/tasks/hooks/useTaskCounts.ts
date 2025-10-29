@@ -1,4 +1,4 @@
-import { useGetAllQuery } from '@/tasks/store/api/tasks';
+import { useGetAllQuery } from '@/features/tasks/store/api/tasks';
 
 export function useTaskCounts() {
   const counts = useGetAllQuery(undefined, {

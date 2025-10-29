@@ -1,13 +1,13 @@
 import { memo, useState, useCallback } from 'react';
 import TaskItemEditor from './TaskItemEditor';
 import TaskItemDisplay from './TaskItemDisplay';
-import type { Task } from '@/tasks/types';
+import type { Task } from '@/features/tasks/types';
 import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation,
   useUpdateTextMutation
-} from '@/tasks/store/api/tasks';
+} from '@/features/tasks/store/api/tasks';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
 import { useAppDispatch } from '@/store/hooks';
 import { setError } from '@/store/error/errorSlice';

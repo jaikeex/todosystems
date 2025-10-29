@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Filter } from '@/tasks/types';
+import type { Filter } from '@/features/tasks/types';
 
 interface TasksFilterState {
   filter: Filter;

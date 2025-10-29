@@ -4,7 +4,7 @@ import {
   useTaskBulkActions,
   useTaskCounts,
   useVisibleTasks
-} from '@/tasks/hooks';
+} from '@/features/tasks/hooks';
 import { twMerge } from 'tailwind-merge';
 
 export default function TaskListHeader() {

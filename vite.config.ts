@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@/tasks': path.resolve(__dirname, './src/features/tasks'),
       '@': path.resolve(__dirname, './src')
     }
   }

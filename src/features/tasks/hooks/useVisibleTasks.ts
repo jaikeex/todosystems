@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import { useGetAllQuery } from '@/tasks/store/api/tasks';
-import type { Task } from '@/tasks/types';
+import { useGetAllQuery } from '@/features/tasks/store/api/tasks';
+import type { Task } from '@/features/tasks/types';
 
 export function useVisibleTasks() {
   const { data: tasks = [] } = useGetAllQuery();

@@ -2,8 +2,11 @@ import { useRef, useCallback } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { Input, Button, Typography, Loader } from '@/ui';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
-import { setFilter } from '@/tasks/store';
-import { useCreateTaskMutation, useGetAllQuery } from '@/tasks/store/api/tasks';
+import { setFilter } from '@/features/tasks/store';
+import {
+  useCreateTaskMutation,
+  useGetAllQuery
+} from '@/features/tasks/store/api/tasks';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { twMerge } from 'tailwind-merge';

@@ -1,9 +1,9 @@
-import type { Task } from '@/tasks/types';
+import type { Task } from '@/features/tasks/types';
 import TaskItem from './TaskItem';
 import SkeletonList from './SkeletonList';
 import { Typography } from '@/ui';
-import { useVisibleTasks } from '@/tasks/hooks';
-import { useGetAllQuery } from '@/tasks/store/api/tasks';
+import { useVisibleTasks } from '@/features/tasks/hooks';
+import { useGetAllQuery } from '@/features/tasks/store/api/tasks';
 import { useAppSelector } from '@/store/hooks';
 
 const TaskList = () => {

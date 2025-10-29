@@ -4,7 +4,7 @@ import {
   useCompleteMutation,
   useIncompleteMutation,
   useDeleteTaskMutation
-} from '@/tasks/store/api/tasks';
+} from '@/features/tasks/store/api/tasks';
 import { useTaskCounts } from './useTaskCounts';
 import { useVisibleTasks } from './useVisibleTasks';
 

@@ -3,8 +3,8 @@ import { FilterBadge, Typography } from '@/ui';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { FILTERS } from '@/constants';
 import { setFilter } from '@/features/tasks/store';
-import type { Filter } from '@/tasks/types';
-import { useTaskCounts } from '@/tasks/hooks';
+import type { Filter } from '@/features/tasks/types';
+import { useTaskCounts } from '@/features/tasks/hooks';
 
 const TaskFilters = () => {
   const dispatch = useAppDispatch();

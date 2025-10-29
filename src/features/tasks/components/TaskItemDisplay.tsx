@@ -1,4 +1,4 @@
-import type { Task } from '@/tasks/types';
+import type { Task } from '@/features/tasks/types';
 import { Typography, Checkbox, Tooltip } from '@/ui';
 import { FiDelete } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
