@@ -47,7 +47,7 @@ export const tasksApi = createApi({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         const now = Date.now();
         const tempTask: Task = {
-          id: `temp-${now}`,
+          id: `temp-${now}-${Math.random().toString(36).substring(2, 15)}`,
           text: args.text,
           completed: false,
           createdDate: now
