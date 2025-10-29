@@ -2,6 +2,8 @@ import { useRef, useCallback } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import { Input, Button, Typography, Loader } from '@/ui';
 import { MAX_TASK_TEXT_LENGTH } from '@/constants';
+import { TaskPayloadSchema } from '@/features/tasks/types';
+import { z } from 'zod';
 import { setFilter } from '@/features/tasks/store';
 import {
   useCreateTaskMutation,
@@ -27,20 +29,18 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      const text = inputRef.current?.value.trim();
+      const rawText = inputRef.current?.value ?? '';
+      const text = rawText.trim();
 
-      if (!text) {
-        dispatch(setError('Task name is required'));
-        return;
-      } else {
+      try {
+        TaskPayloadSchema.parse({ text });
         dispatch(clearError());
-      }
-
-      // Should never happen as the input is limited, but just in case
-      if (text.length > MAX_TASK_TEXT_LENGTH) {
-        dispatch(
-          setError(`Task name cannot exceed ${MAX_TASK_TEXT_LENGTH} characters`)
-        );
+      } catch (e) {
+        if (e instanceof z.ZodError) {
+          dispatch(setError(e.issues[0]?.message ?? 'Invalid task name'));
+        } else {
+          dispatch(setError('Invalid task name'));
+        }
         return;
       }
 
@@ -50,6 +50,10 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
 
         if (inputRef.current) {
           inputRef.current.value = '';
+
+          setTimeout(() => {
+            inputRef.current?.focus();
+          }, 0);
         }
       } catch {
         /**
