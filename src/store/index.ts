@@ -3,15 +3,7 @@ import { tasksReducers, tasksMiddleware } from '@/features/tasks/store';
 import errorReducer from './error/errorSlice';
 import { errorMiddleware } from './error/errorMiddleware';
 
-import {
-  persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER
-} from 'redux-persist';
+import { persistStore } from 'redux-persist';
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +13,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+        ignoredActions: ['persist/PERSIST', 'tasksApi']
       }
     }).concat(...tasksMiddleware, errorMiddleware)
 });
