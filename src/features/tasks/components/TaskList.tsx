@@ -2,13 +2,13 @@ import type { Task } from '@/tasks/types';
 import TaskItem from './TaskItem';
 import SkeletonList from './SkeletonList';
 import { Typography } from '@/ui';
-import { selectFilter, useVisibleTasks } from '@/tasks/hooks';
+import { useVisibleTasks } from '@/tasks/hooks';
 import { useGetAllQuery } from '@/tasks/store/api/tasks';
 import { useAppSelector } from '@/store/hooks';
 
 const TaskList = () => {
   const { data, isLoading, isError } = useGetAllQuery();
-  const filter = useAppSelector(selectFilter);
+  const filter = useAppSelector((state) => state.tasksFilter.filter);
 
   const hasCachedData = data !== undefined;
   const tasks = useVisibleTasks();

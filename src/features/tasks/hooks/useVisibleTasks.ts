@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '@/store/hooks';
-import { type RootState } from '@/store/index';
 import { useGetAllQuery } from '@/tasks/store/api/tasks';
 import type { Task } from '@/tasks/types';
 
-export const selectFilter = (state: RootState) => state.tasksFilter.filter;
-
 export function useVisibleTasks() {
   const { data: tasks = [] } = useGetAllQuery();
-  const filter = useAppSelector(selectFilter);
+  const filter = useAppSelector((state) => state.tasksFilter.filter);
 
   return useMemo(() => {
     switch (filter) {

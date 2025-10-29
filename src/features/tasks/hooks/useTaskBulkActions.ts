@@ -6,6 +6,7 @@ import {
   useDeleteTaskMutation
 } from '@/tasks/store/api/tasks';
 import { useTaskCounts } from './useTaskCounts';
+import { useVisibleTasks } from './useVisibleTasks';
 
 export function useTaskBulkActions() {
   const { data: tasks = [] } = useGetAllQuery();
@@ -14,16 +15,17 @@ export function useTaskBulkActions() {
   const [deleteTask, deleteState] = useDeleteTaskMutation();
 
   const counts = useTaskCounts();
+  const visibleTasks = useVisibleTasks();
 
   const allCompleted = counts.all > 0 && counts.done === counts.all;
 
   const toggleAll = useCallback(async () => {
     const mutations = allCompleted
-      ? tasks.filter((t) => t.completed).map((t) => incomplete(t.id))
-      : tasks.filter((t) => !t.completed).map((t) => complete(t.id));
+      ? visibleTasks.filter((t) => t.completed).map((t) => incomplete(t.id))
+      : visibleTasks.filter((t) => !t.completed).map((t) => complete(t.id));
 
     await Promise.allSettled(mutations);
-  }, [allCompleted, tasks, complete, incomplete]);
+  }, [allCompleted, visibleTasks, complete, incomplete]);
 
   const deleteAll = useCallback(() => {
     const doneTasks = tasks.filter((t) => t.completed);
