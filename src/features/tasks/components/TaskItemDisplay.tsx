@@ -10,6 +10,7 @@ interface TaskItemDisplayProps {
   onEditClick: () => void;
   onEditKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => void;
   onDeleteClick: () => void;
+  flash?: boolean;
 }
 
 const TaskItemDisplay: React.FC<TaskItemDisplayProps> = ({
@@ -18,10 +19,16 @@ const TaskItemDisplay: React.FC<TaskItemDisplayProps> = ({
   onToggleStatus,
   onEditClick,
   onEditKeyDown,
-  onDeleteClick
+  onDeleteClick,
+  flash = false
 }) => {
   return (
-    <li className="flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600">
+    <li
+      className={twMerge(
+        'flex items-center gap-3 p-2 rounded-md min-h-16 bg-surface-600 border-2 border-transparent',
+        flash && 'animate-flashBorder'
+      )}
+    >
       <Checkbox
         checked={task.completed}
         onChange={onToggleStatus}

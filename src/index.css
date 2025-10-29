@@ -62,6 +62,18 @@
       opacity: 0;
     }
   }
+
+  @keyframes flashBorder {
+    0% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: var(--color-primary-500);
+    }
+    100% {
+      border-color: transparent;
+    }
+  }
 }
 
 @layer utilities {
@@ -70,6 +82,10 @@
   }
   .animate-fadeOut {
     animation: fadeOut 0.2s ease-in forwards;
+  }
+
+  .animate-flashBorder {
+    animation: flashBorder 1s ease-in-out forwards;
   }
 }
 

@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { z } from 'zod';
 import { TaskSchema, TaskPayloadSchema } from '@/features/tasks/types';
 import type { Task, TaskPayload } from '@/features/tasks/types';
+import { addFlashTask } from '../slices/flashSlice';
 
 /**
  * Decided to give rtk query a shot since it was suggested in the requirements.
@@ -70,6 +71,8 @@ export const tasksApi = createApi({
               }
             })
           );
+
+          dispatch(addFlashTask(newTask.id));
         } catch {
           patchResult.undo();
         }
