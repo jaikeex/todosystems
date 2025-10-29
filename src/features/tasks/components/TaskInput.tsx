@@ -48,10 +48,7 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
 
         if (inputRef.current) {
           inputRef.current.value = '';
-
-          setTimeout(() => {
-            inputRef.current?.focus();
-          }, 0);
+          inputRef.current?.focus();
         }
       } catch {
         /**

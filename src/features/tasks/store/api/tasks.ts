@@ -113,91 +113,78 @@ export const tasksApi = createApi({
         };
       },
       transformResponse: (response: unknown) => TaskSchema.parse(response),
-      async onQueryStarted({ id, text }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-            const task = draft.find((t) => t.id === id);
-            if (task) {
-              task.text = text;
-            }
-          })
-        );
-
-        try {
-          const { data: updatedTask } = await queryFulfilled;
-          dispatch(
-            tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-              const task = draft.find((t) => t.id === id);
-              if (task) {
-                Object.assign(task, updatedTask);
-              }
-            })
-          );
-        } catch {
-          patchResult.undo();
+      onQueryStarted: createOptimisticUpdateHandler<{
+        id: string;
+        text: string;
+      }>((draft, { id, text }) => {
+        const task = draft.find((t) => t.id === id);
+        if (task) {
+          task.text = text;
         }
-      }
+      })
     }),
 
     complete: builder.mutation<Task, string>({
       query: (id) => ({ url: `/tasks/${id}/complete`, method: 'POST' }),
       transformResponse: (response: unknown) => TaskSchema.parse(response),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-            const task = draft.find((t) => t.id === id);
-            if (task) {
-              task.completed = true;
-            }
-          })
-        );
-
-        try {
-          const { data: updatedTask } = await queryFulfilled;
-          dispatch(
-            tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-              const task = draft.find((t) => t.id === id);
-              if (task) {
-                Object.assign(task, updatedTask);
-              }
-            })
-          );
-        } catch {
-          patchResult.undo();
+      onQueryStarted: createOptimisticUpdateHandler<string>((draft, id) => {
+        const task = draft.find((t) => t.id === id);
+        if (task) {
+          task.completed = true;
         }
-      }
+      })
     }),
 
     incomplete: builder.mutation<Task, string>({
       query: (id) => ({ url: `/tasks/${id}/incomplete`, method: 'POST' }),
       transformResponse: (response: unknown) => TaskSchema.parse(response),
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-            const task = draft.find((t) => t.id === id);
-            if (task) {
-              task.completed = false;
-            }
-          })
-        );
-
-        try {
-          const { data: updatedTask } = await queryFulfilled;
-          dispatch(
-            tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-              const task = draft.find((t) => t.id === id);
-              if (task) {
-                Object.assign(task, updatedTask);
-              }
-            })
-          );
-        } catch {
-          patchResult.undo();
+      onQueryStarted: createOptimisticUpdateHandler<string>((draft, id) => {
+        const task = draft.find((t) => t.id === id);
+        if (task) {
+          task.completed = false;
         }
-      }
+      })
     })
   })
 });
+
+interface MutationApi {
+  /**
+   * typing this correctly proved much harder that i would ever imagine. I hate any, but spending another
+   * half hour attempting to understand the types behind this and getting this correctly without circular
+   * imports wasnt the most enticing prospect...
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatch: any;
+  queryFulfilled: Promise<{ data: Task }>;
+}
+
+function createOptimisticUpdateHandler<TArg>(
+  optimisticUpdater: (draft: Task[], arg: TArg) => void
+) {
+  return async (arg: TArg, { dispatch, queryFulfilled }: MutationApi) => {
+    const patchResult = dispatch(
+      tasksApi.util.updateQueryData('getAll', undefined, (draft: Task[]) => {
+        optimisticUpdater(draft, arg);
+      })
+    );
+
+    try {
+      const { data: updatedTask } = await queryFulfilled;
+
+      dispatch(
+        tasksApi.util.updateQueryData('getAll', undefined, (draft: Task[]) => {
+          const task = draft.find((t: Task) => t.id === updatedTask.id);
+          if (task) {
+            Object.assign(task, updatedTask);
+          }
+        })
+      );
+    } catch {
+      patchResult.undo();
+    }
+  };
+}
 
 export const {
   useGetAllQuery,
