@@ -17,7 +17,7 @@ import { addFlashTask } from '../slices/flashSlice';
 const TASKS_TAG = 'Tasks' as const;
 
 const sortTasks = (tasks: Task[]) =>
-  tasks.slice().sort((a, b) => a.createdDate - b.createdDate);
+  tasks.slice().sort((a, b) => b.createdDate - a.createdDate);
 
 const TasksArraySchema = z.array(TaskSchema);
 
@@ -56,7 +56,7 @@ export const tasksApi = createApi({
 
         const patchResult = dispatch(
           tasksApi.util.updateQueryData('getAll', undefined, (draft) => {
-            draft.push(tempTask);
+            draft.unshift(tempTask);
           })
         );
 
