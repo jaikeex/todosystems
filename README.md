@@ -1,6 +1,6 @@
 Nothing special:
 
 - npm install
-- npm run dev
+- npm start
 
 Enjoy! 🎉
