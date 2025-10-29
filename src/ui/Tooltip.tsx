@@ -53,6 +53,7 @@ const Tooltip: React.FC<TooltipProps> = ({
           className={twMerge(
             'absolute z-50 px-3 py-2 text-sm text-text-primary bg-surface-500 rounded-lg shadow-lg whitespace-nowrap',
             'animate-in fade-in zoom-in-95 duration-200',
+            'hidden md:block',
             positionClasses[position]
           )}
           role="tooltip"
