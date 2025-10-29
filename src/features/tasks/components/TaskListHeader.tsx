@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Tooltip, Checkbox, Typography } from '@/ui';
+import { Tooltip, Checkbox, Typography, Button } from '@/ui';
 import {
   useTaskBulkActions,
   useTaskCounts,
@@ -35,20 +35,21 @@ export default function TaskListHeader() {
         </Typography>
       </div>
 
-      <button
+      <Button
         onClick={deleteAll}
         disabled={!done || busy.deleting}
+        size="small"
+        color="ghost"
         className={twMerge(
-          'disabled:opacity-40 disabled:cursor-not-allowed px-2 py-1 bg-transparent transition-colors duration-200 cursor-pointer',
-          'border border-danger-500 rounded-md',
+          'border border-danger-500',
           !done || busy.deleting
-            ? 'opacity-40 cursor-not-allowed'
-            : 'opacity-100 cursor-pointer hover:text-danger-500 '
+            ? 'opacity-40 disabled:bg-transparent'
+            : ' hover:text-danger-500 '
         )}
         aria-label={`Delete all ${done} completed task${done !== 1 ? 's' : ''}`}
       >
         <Typography variant="label">Delete all completed tasks</Typography>
-      </button>
+      </Button>
     </div>
   );
 }
