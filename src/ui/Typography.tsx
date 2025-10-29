@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 
 const classConfig = {
   variant: {
@@ -50,10 +50,10 @@ const Typography = <E extends React.ElementType = 'p'>({
   return (
     <Component
       {...props}
-      className={cn(
-        `font-open-sans md:antialiased ${classConfig.variant[variant]} ${
-          disableLinkStyles ? 'no-underline typography-base' : ''
-        }`,
+      className={twMerge(
+        'font-open-sans md:antialiased',
+        classConfig.variant[variant],
+        disableLinkStyles ? 'no-underline typography-base' : '',
         align && classConfig.align[align],
         className
       )}

@@ -1,7 +1,7 @@
 import type { Task } from '@/tasks/types';
 import { Typography, Checkbox, Tooltip } from '@/ui';
 import { FiDelete } from 'react-icons/fi';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 
 interface TaskItemDisplayProps {
   task: Task;
@@ -36,7 +36,7 @@ const TaskItemDisplay: React.FC<TaskItemDisplayProps> = ({
         onKeyDown={onEditKeyDown}
         disabled={isLoading}
         aria-label={`Edit task: ${task.text}`}
-        className={cn(
+        className={twMerge(
           'flex-1 bg-transparent border-none cursor-text p-0',
           isLoading && 'cursor-not-allowed'
         )}
@@ -45,7 +45,7 @@ const TaskItemDisplay: React.FC<TaskItemDisplayProps> = ({
           variant="body"
           as="span"
           align="left"
-          className={cn(task.completed && 'line-through text-gray-400')}
+          className={twMerge(task.completed && 'line-through text-gray-400')}
         >
           {task.text}
         </Typography>

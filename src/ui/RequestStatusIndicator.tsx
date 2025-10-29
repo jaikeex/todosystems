@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { Loader } from '@/ui';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 
 interface RequestStatusIndicatorProps {
   className?: string;
@@ -76,7 +76,9 @@ const RequestStatusIndicator: React.FC<RequestStatusIndicatorProps> = ({
 
   if (!visible) return null;
 
-  return <Loader size="md" className={cn(className, animationClassName)} />;
+  return (
+    <Loader size="md" className={twMerge(className, animationClassName)} />
+  );
 };
 
 export default RequestStatusIndicator;

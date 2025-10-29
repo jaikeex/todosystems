@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 import { Typography } from '@/ui';
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -15,7 +15,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
     <label className="inline-flex items-center cursor-pointer gap-2 select-none transition-colors duration-200">
       <input
         type="checkbox"
-        className={cn(
+        className={twMerge(
           'h-6 w-6 rounded border-surface-300 transition-colors duration-200',
           'accent-primary-500',
           'checked:bg-primary-500 checked:border-primary-500',

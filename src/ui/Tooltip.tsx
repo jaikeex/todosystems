@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 
 interface TooltipProps {
   children: React.ReactNode;
@@ -42,7 +42,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={cn('relative inline-flex items-center', className)}
+      className={twMerge('relative inline-flex items-center', className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -50,7 +50,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
       {isVisible ? (
         <div
-          className={cn(
+          className={twMerge(
             'absolute z-50 px-3 py-2 text-sm text-text-primary bg-surface-500 rounded-lg shadow-lg whitespace-nowrap',
             'animate-in fade-in zoom-in-95 duration-200',
             positionClasses[position]
@@ -59,7 +59,10 @@ const Tooltip: React.FC<TooltipProps> = ({
         >
           {content}
           <div
-            className={cn('absolute w-0 h-0 border-4', arrowClasses[position])}
+            className={twMerge(
+              'absolute w-0 h-0 border-4',
+              arrowClasses[position]
+            )}
           />
         </div>
       ) : null}

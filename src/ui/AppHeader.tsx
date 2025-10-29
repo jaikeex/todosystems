@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 import { Typography, RequestStatusIndicator } from '@/ui';
 import { FaGithub } from 'react-icons/fa';
 import { APP_NAME, GITHUB_URL } from '@/constants';
@@ -11,7 +11,7 @@ interface AppHeaderProps {
 const AppHeader: React.FC<AppHeaderProps> = ({ className }) => {
   return (
     <header
-      className={cn(
+      className={twMerge(
         'w-full bg-surface-900 text-text-primary shadow-md sticky top-0 z-10',
         className
       )}

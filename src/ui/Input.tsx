@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 import { Typography } from '@/ui';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -24,7 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
           id={id}
           ref={ref}
-          className={cn(
+          className={twMerge(
             'w-full px-3 py-2 border rounded-lg',
             'transition-colors duration-200 focus:outline-none focus:ring-2',
             'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60',

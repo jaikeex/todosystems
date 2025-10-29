@@ -6,7 +6,7 @@ import { setFilter } from '@/tasks/store';
 import { useCreateTaskMutation } from '@/tasks/store/api/tasks';
 import { setError, clearError } from '@/store/error/errorSlice';
 import { useAppDispatch } from '@/store/hooks';
-import cn from 'classnames';
+import { twMerge } from 'tailwind-merge';
 
 interface TaskInputProps extends React.HTMLAttributes<HTMLFormElement> {
   className?: string;
@@ -59,7 +59,7 @@ const TaskInput = ({ className, ...props }: TaskInputProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn('flex gap-2 w-full max-w-xl', className)}
+      className={twMerge('flex gap-2 w-full max-w-xl', className)}
       {...props}
     >
       <Input
